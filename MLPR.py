@@ -19,6 +19,12 @@ ax[1].set_ylabel('Frequency')
 plt.tight_layout()
 plt.show()
 '''
+'''In the line graph, there are small bursts of regions with high amplitude,
+unevenly distributed throughout the sequence. There are 4 main clusters of these bursts.
+The histogram shows a steep bell-shaped distribution centred around 0:
+amplitudes close to 0 are most frequent.'''
+
+# QUESTION 1b
 
 R = len(amp_data) // 21
 dataset = amp_data[0:R*21]
