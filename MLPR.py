@@ -31,11 +31,16 @@ dataset = amp_data[0:R*21]
 M = dataset.reshape(R,21)
 
 
+np.random.seed(123)
 rdataset = np.random.permutation(M)
 l_train = np.floor(R*0.7).astype(int)
-l_vail = np.floor(R*0.15).astype(int)
-l_test = R-l_train-l_vail.astype(int)
+l_vail = np.floor(R*0.85).astype(int)
+#l_test = R-l_train-l_vail.astype(int)
+
 X_shuf_train = rdataset[0:l_train , 0:20]
 y_shuf_train = rdataset[0:l_train,20]
-print(X_shuf_train.shape)
+X_shuf_val = rdataset[l_train:l_vail,0:20]
+y_shuf_val = rdataset[l_train:l_vail,20]
+X_shuf_test = rdataset[l_vail:,0:20]
+y_shuf_test = rdataset[l_vail:,20]
 
