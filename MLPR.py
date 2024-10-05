@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 amp_data = np.load('amp_data.npz')['amp_data']
 
 # QUESTION 1a
-fig, ax = plt.subplots(2,1)
+#fig, ax = plt.subplots(2,1)
 '''
 ax[0].plot(amp_data)
 ax[0].set_title('Line Graph of Sequence in amp_data.npz')
@@ -46,20 +46,29 @@ y_shuf_val = rdataset[l_train:l_val, 20]
 X_shuf_test = rdataset[l_val:, 0:20]
 y_shuf_test = rdataset[l_val:, 20]
 
+
+# QUESTION 1c
+
+# Obtain lstsq coefficients
 t = np.linspace(0,19/20,20).reshape(-1,1)
-#print(type(t))
-#print(t)
-d_M = np.hstack((np.ones((20,1)),t))
-d_M_q = np.hstack((np.ones((20,1)),t,t**2,t**3,t**4))
-beta_f = np.linalg.lstsq(d_M,X_shuf_train[0].reshape(-1,1),rcond=None)[0]
-beta_f_q = np.linalg.lstsq(d_M_q,X_shuf_train[0].reshape(-1,1),rcond=None)[0]
+d_M_linear = np.hstack([np.ones((20, 1)), t])
+d_M_quartic = np.hstack([np.ones((20, 1)), t, t ** 2, t ** 3, t ** 4])
+w_linear = np.linalg.lstsq(d_M_linear, X_shuf_train[0].reshape(-1, 1), rcond=None)[0]
+w_quartic = np.linalg.lstsq(d_M_quartic, X_shuf_train[0].reshape(-1, 1), rcond=None)[0]
 
-yf = np.dot(d_M,beta_f)
-print(d_M.shape)
-print(yf)
-#fig1,ax1 = plt.subplots(1,1)
+# Find coords for the linear and quartic fits
+t_plot = np.linspace(0, 1, 100)
+y_linear = w_linear[0] + w_linear[1] * t_plot
+y_quartic = w_quartic[0] + w_quartic[1] * t_plot + w_quartic[2] * t_plot ** 2 + w_quartic[3] * t_plot ** 3 + w_quartic[4] * t_plot ** 4
 
-#ax1 = plt.scatter(t,X_shuf_test[0])
-#ax1 = plt.scatter(1,y_shuf_test[0],c="r")
-#ax1 = plt.plot(t,yf,linewidth=2)
-#plt.show()
+# Plot the data points and the fits
+fig1,ax1 = plt.subplots(1,1)
+ax1 = plt.scatter(t, X_shuf_train[0])
+ax1 = plt.scatter(1, y_shuf_train[0], c="r")
+ax1 = plt.plot(t_plot, y_linear, linewidth=2, label="Polynomial Fit (Linear)")
+ax1 = plt.plot(t_plot, y_quartic, linewidth=2, label="Polynomial Fit (Quartic)")
+ax1 = plt.title("Polynomial Fits of Degree 1 and 4 on One Row of Training Data")
+ax1 = plt.xlabel("Time Index")
+ax1 = plt.ylabel("Amplitude")
+ax1 = plt.legend()
+plt.show()
