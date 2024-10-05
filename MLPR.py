@@ -72,3 +72,14 @@ ax1 = plt.xlabel("Time Index")
 ax1 = plt.ylabel("Amplitude")
 ax1 = plt.legend()
 plt.show()
+
+def phi(C,K):
+    l_t = t[20-C:20,0].reshape(-1,1)
+    M = np.ones((C,1))
+    if K == 1:
+        return M
+    else:
+        for i in range(1,K):
+            M = np.hstack((M,l_t**(i)))
+        return M
+print(phi(3,4))
