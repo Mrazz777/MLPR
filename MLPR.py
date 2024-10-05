@@ -43,4 +43,3 @@ X_shuf_val = rdataset[l_train:l_vail,0:20]
 y_shuf_val = rdataset[l_train:l_vail,20]
 X_shuf_test = rdataset[l_vail:,0:20]
 y_shuf_test = rdataset[l_vail:,20]
-
