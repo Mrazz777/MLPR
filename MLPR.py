@@ -45,3 +45,21 @@ X_shuf_val = rdataset[l_train:l_val, 0:20]
 y_shuf_val = rdataset[l_train:l_val, 20]
 X_shuf_test = rdataset[l_val:, 0:20]
 y_shuf_test = rdataset[l_val:, 20]
+
+t = np.linspace(0,19/20,20).reshape(-1,1)
+#print(type(t))
+#print(t)
+d_M = np.hstack((np.ones((20,1)),t))
+d_M_q = np.hstack((np.ones((20,1)),t,t**2,t**3,t**4))
+beta_f = np.linalg.lstsq(d_M,X_shuf_train[0].reshape(-1,1),rcond=None)[0]
+beta_f_q = np.linalg.lstsq(d_M_q,X_shuf_train[0].reshape(-1,1),rcond=None)[0]
+
+yf = np.dot(d_M,beta_f)
+print(d_M.shape)
+print(yf)
+#fig1,ax1 = plt.subplots(1,1)
+
+#ax1 = plt.scatter(t,X_shuf_test[0])
+#ax1 = plt.scatter(1,y_shuf_test[0],c="r")
+#ax1 = plt.plot(t,yf,linewidth=2)
+#plt.show()
