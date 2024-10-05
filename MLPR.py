@@ -26,20 +26,22 @@ amplitudes close to 0 are most frequent.'''
 
 # QUESTION 1b
 
+# Split the data into 21-length sequences
 R = len(amp_data) // 21
 dataset = amp_data[0:R*21]
 M = dataset.reshape(R,21)
 
-
+# Shuffle rows then find num records for the training, validation and test sets
 np.random.seed(123)
 rdataset = np.random.permutation(M)
 l_train = np.floor(R*0.7).astype(int)
-l_vail = np.floor(R*0.85).astype(int)
+l_val = np.floor(R * 0.85).astype(int)
 #l_test = R-l_train-l_vail.astype(int)
 
+# Split the data into training, validation and test sets
 X_shuf_train = rdataset[0:l_train , 0:20]
 y_shuf_train = rdataset[0:l_train,20]
-X_shuf_val = rdataset[l_train:l_vail,0:20]
-y_shuf_val = rdataset[l_train:l_vail,20]
-X_shuf_test = rdataset[l_vail:,0:20]
-y_shuf_test = rdataset[l_vail:,20]
+X_shuf_val = rdataset[l_train:l_val, 0:20]
+y_shuf_val = rdataset[l_train:l_val, 20]
+X_shuf_test = rdataset[l_val:, 0:20]
+y_shuf_test = rdataset[l_val:, 20]
