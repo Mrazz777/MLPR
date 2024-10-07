@@ -127,25 +127,54 @@ predict_linear 0.043741808439555926
 predict_quartic 0.03998262151479061'''
 
 
-# QUESTION 3ci
+# # QUESTION 3ci
+# # Initialise variables
+# C = 20
+# K = 4
+# M_e = np.ones((C,K))
+#
+# for i in range(0,C): #row
+#     for j in  range(0,K):
+#         # Require c > k so that the matrix is lower triangular
+#         if i > j :
+#             error = (np.dot( X_shuf_train[0,(19-i):] , make_vv(i+1,j+1) )-y_shuf_train[0])
+#             M_e[i,j] = error**2
+#         else:
+#             M_e[i,j] = np.inf
+#
+# print(M_e)
+#
+# min_e_s = np.min(M_e)
+# print(min_e_s)
+# print(np.where(M_e == min_e_s))
+# print(M_e[11,1])
+#
+# '''Smallest square error is 3.725290298457679e-09 for C=12 and K=2.'''
+
+# q3ci NEW
 # Initialise variables
 C = 20
 K = 4
 M_e = np.ones((C,K))
 
 for i in range(0,C): #row
-    for j in  range(0,K):
+    for j in range(0,K):
         # Require c > k so that the matrix is lower triangular
-        if i > j :
-            error = (np.dot( X_shuf_train[0,(19-i):] , make_vv(i+1,j+1) )-y_shuf_train[0])
-            M_e[i,j] = error**2
+        if i >= j :
+            error = 0
+            v = make_vv(i + 1, j + 1)
+
+            # Find min square error for each row
+            for k in range(0,len(y_shuf_val)):
+                error += (np.dot(X_shuf_train[k,(19-i):], v) - y_shuf_train[k]) ** 2
+                M_e[i,j] = error/len(y_shuf_val)
         else:
             M_e[i,j] = np.inf
 
 print(M_e)
 
 min_e_s = np.min(M_e)
-print(min_e_s)
+print("Min square error:", min_e_s)
 print(np.where(M_e == min_e_s))
 print(M_e[11,1])
 
@@ -218,22 +247,3 @@ print("Validation set context with lowest MSE: ", C_val)
 #     print(eee/(l_val - l_train))
 
 
-# q3 2i
-
-for i in range(0,C): #row
-    for j in  range(0,K):
-        if i >= j :
-            eee = 0
-            bate_tt = make_vv(i+1,j+1)
-            for k in range(0,len(y_shuf_val)):
-                eee += (np.dot(X_shuf_train[k,(19-i):],bate_tt)-y_shuf_train[k])**2
-                M_e[i,j] = eee/len(y_shuf_val)
-        else:
-            M_e[i,j] = np.inf
-
-print(M_e)
-
-
-min_e_s = np.min(M_e)
-print(min_e_s)
-print(np.where(M_e == min_e_s))
