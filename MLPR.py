@@ -36,7 +36,6 @@ np.random.seed(123)
 rdataset = np.random.permutation(M)
 l_train = np.floor(R*0.7).astype(int)
 l_val = np.floor(R * 0.85).astype(int)
-#l_test = R-l_train-l_vail.astype(int)
 
 # Split the data into training, validation and test sets
 X_shuf_train = rdataset[0:l_train , 0:20]
@@ -61,6 +60,10 @@ t_plot = np.linspace(0, 1, 100)
 y_linear = w_linear[0] + w_linear[1] * t_plot
 y_quartic = w_quartic[0] + w_quartic[1] * t_plot + w_quartic[2] * t_plot ** 2 + w_quartic[3] * t_plot ** 3 + w_quartic[4] * t_plot ** 4
 
+
+
+
+
 # Plot the data points and the fits
 fig1,ax1 = plt.subplots(1,1)
 ax1 = plt.scatter(t, X_shuf_train[0])
@@ -73,13 +76,56 @@ ax1 = plt.ylabel("Amplitude")
 ax1 = plt.legend()
 plt.show()
 
-def phi(C,K):
+
+
+# Question 3b
+
+def Phi(C, K):
+    '''Constructs a C x K design matrix, representing the C
+    most recent time steps before the time we wish to predict (t=1).
+    The row for time t has K features.'''
+    # Construct input time vector
     l_t = t[20-C:20,0].reshape(-1,1)
     M = np.ones((C,1))
+
+    # Construct design matrix
     if K == 1:
         return M
     else:
         for i in range(1,K):
-            M = np.hstack((M,l_t**(i)))
+            M = np.hstack((M, l_t**(i))) # Add columns of t^i
         return M
-print(phi(3,4))
+
+
+def make_vv(C, K):
+    '''Returns the vector v for a model with K features and context of C previous amplitudes.'''
+    Phi_1 = np.ones((K, 1)) # First row of Phi
+    d_m = Phi(C, K)
+    a = np.linalg.inv(np.dot(d_m.T, d_m)) # Inverse of d_m.T * d_m
+    v = np.dot(np.dot(d_m, a.T), Phi_1)  # d_m * a * Phi_1
+    return v
+
+# QUESTION 3biii
+
+v_linear = make_vv(20, 2)
+predict_linear = np.dot(v_linear.T, X_shuf_train[0])
+
+v_quartic = make_vv(20, 5)
+predict_quartic = np.dot(v_quartic.T, X_shuf_train[0])
+
+# Check if the predictions are the same as the last values of the polynomial fits to 8 decimal places
+print(np.isclose(y_linear[-1], predict_linear[0], atol=1e-8))
+print(np.isclose(y_quartic[-1], predict_quartic[0], atol=1e-8))
+
+print("predict_linear", predict_linear[0])
+print("predict_quartic", predict_quartic[0])
+
+'''Returns:
+True
+True
+predict_linear 0.043741808439555926
+predict_quartic 0.03998262151479061'''
+
+
+# QUESTION 3ci
+
