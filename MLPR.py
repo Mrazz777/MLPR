@@ -179,9 +179,41 @@ Validation set MSE:  0.0002659203590978971
 Test set MSE:  0.0002626577603204292
 '''
 
-for i in range(1,20) :
-    eee = 0
-    beta_t = make_vv(i+1,2)
-    for j in range(0,len(y_shuf_val)):
-        eee += (np.dot(X_shuf_val[j,19-i:],beta_t)-y_shuf_val[j])**2
-    print(eee/l_train)
+# QUESTION 4a
+
+def context_lmse(X_shuf_set, y_shuf_set):
+    '''Returns context C with the lowest mean squared error.'''
+    l = len(y_shuf_set)
+    lmse = np.inf
+    min_C = 0
+
+    for i in range(1,20):
+        mse = 0
+        beta_t = make_vv(i+1,2)
+
+        # Find MSE for each context
+        for j in range(0,len(y_shuf_set)):
+            mse += (np.dot(X_shuf_set[j,19-i:],beta_t)-y_shuf_set[j])**2
+        mse = mse/l
+
+        # Update lowest MSE and context
+        if mse < lmse:
+            lmse = mse
+            min_C = i + 1
+
+    return min_C
+
+# Find the context with lowest MSE for each set
+C_train = context_lmse(X_shuf_train, y_shuf_train)
+C_val = context_lmse(X_shuf_val, y_shuf_val)
+print("Training set context with lowest MSE: ", C_train)
+print("Validation set context with lowest MSE: ", C_val)
+
+
+# for i in range(1,20) :
+#     eee = 0
+#     beta_t = make_vv(i+1,2)
+#     for j in range(0,len(y_shuf_val)):
+#         eee += (np.dot(X_shuf_val[j,19-i:],beta_t)-y_shuf_val[j])**2
+#     print(eee/(l_val - l_train))
+
