@@ -169,7 +169,12 @@ def mse(X_shuf_set, y_shuf_set, beta_t):
 mse_train = mse(X_shuf_train, y_shuf_train, beta_t)[0]
 mse_val = mse(X_shuf_val, y_shuf_val, beta_t)[0]
 mse_test = mse(X_shuf_test, y_shuf_test, beta_t)[0]
-print("MSE for training set: ", mse_train)
-print("MSE for validation set: ", mse_val)
-print("MSE for test set: ", mse_test)
+print("Training set MSE: ", mse_train)
+print("Validation set MSE: ", mse_val)
+print("Test set MSE: ", mse_test)
 
+'''Returns:
+Training set MSE:  0.00026760607554292954
+Validation set MSE:  0.0002659203590978971
+Test set MSE:  0.0002626577603204292
+'''
