@@ -178,3 +178,10 @@ Training set MSE:  0.00026760607554292954
 Validation set MSE:  0.0002659203590978971
 Test set MSE:  0.0002626577603204292
 '''
+
+for i in range(1,20) :
+    eee = 0
+    beta_t = make_vv(i+1,2)
+    for j in range(0,len(y_shuf_val)):
+        eee += (np.dot(X_shuf_val[j,19-i:],beta_t)-y_shuf_val[j])**2
+    print(eee/l_train)
