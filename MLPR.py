@@ -148,3 +148,9 @@ print(min_e_s)
 print(np.where(M_e == min_e_s))
 print(M_e[11,1])
 
+
+eee = 0
+for i in range(0,l_train):
+    eee += (np.dot(X_shuf_train[i,19-11:],beta_t)-y_shuf_train[i])**2
+
+print(eee/l_train)
