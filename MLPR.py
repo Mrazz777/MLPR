@@ -217,3 +217,23 @@ print("Validation set context with lowest MSE: ", C_val)
 #         eee += (np.dot(X_shuf_val[j,19-i:],beta_t)-y_shuf_val[j])**2
 #     print(eee/(l_val - l_train))
 
+
+# q3 2i
+
+for i in range(0,C): #row
+    for j in  range(0,K):
+        if i >= j :
+            eee = 0
+            bate_tt = make_vv(i+1,j+1)
+            for k in range(0,len(y_shuf_val)):
+                eee += (np.dot(X_shuf_train[k,(19-i):],bate_tt)-y_shuf_train[k])**2
+                M_e[i,j] = eee/len(y_shuf_val)
+        else:
+            M_e[i,j] = np.inf
+
+print(M_e)
+
+
+min_e_s = np.min(M_e)
+print(min_e_s)
+print(np.where(M_e == min_e_s))
