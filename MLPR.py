@@ -247,3 +247,9 @@ print("Validation set context with lowest MSE: ", C_val)
 #     print(eee/(l_val - l_train))
 
 
+residual = np.ones(len(y_shuf_val))
+for i in range(0,len(y_shuf_val)):
+    residual[i] = y_shuf_val[i] - np.dot(X_shuf_val[i,18:20],make_vv(2,2))
+
+fig2,ax2 = plt.subplots(1,1)
+ax2 = plt.hist(residual,bins=100)
