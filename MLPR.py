@@ -128,4 +128,23 @@ predict_quartic 0.03998262151479061'''
 
 
 # QUESTION 3ci
+C = 20
+K = 4
+M_e = np.ones((C,K))
+
+
+for i in range(0,C): #row
+    for j in  range(0,K):
+        if i > j :
+            error = (np.dot( X_shuf_train[0,(19-i):] , make_vv(i+1,j+1) )-y_shuf_train[0])
+            M_e[i,j] = error**2
+        else:
+            M_e[i,j] = np.inf
+
+print(M_e)
+
+min_e_s = np.min(M_e)
+print(min_e_s)
+print(np.where(M_e == min_e_s))
+print(M_e[11,1])
 
