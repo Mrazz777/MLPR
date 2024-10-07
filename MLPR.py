@@ -128,13 +128,14 @@ predict_quartic 0.03998262151479061'''
 
 
 # QUESTION 3ci
+# Initialise variables
 C = 20
 K = 4
 M_e = np.ones((C,K))
 
-
 for i in range(0,C): #row
     for j in  range(0,K):
+        # Require c > k so that the matrix is lower triangular
         if i > j :
             error = (np.dot( X_shuf_train[0,(19-i):] , make_vv(i+1,j+1) )-y_shuf_train[0])
             M_e[i,j] = error**2
@@ -148,9 +149,27 @@ print(min_e_s)
 print(np.where(M_e == min_e_s))
 print(M_e[11,1])
 
+'''Smallest square error is 3.725290298457679e-09 for C=12 and K=2.'''
 
-eee = 0
-for i in range(0,l_train):
-    eee += (np.dot(X_shuf_train[i,19-11:],beta_t)-y_shuf_train[i])**2
 
-print(eee/l_train)
+# QUESTION 3cii
+
+C = 12
+K = 2
+beta_t = make_vv(C,K)
+def mse(X_shuf_set, y_shuf_set, beta_t):
+    '''Calculates mean squared error for given dataset subset.'''
+    l = len(y_shuf_set)
+    mse = 0
+    for i in range(0,l):
+        mse += (np.dot(X_shuf_set[i,19-11:],beta_t)-y_shuf_set[i])**2
+    return mse/l
+
+# Find MSE for training, validation and test sets
+mse_train = mse(X_shuf_train, y_shuf_train, beta_t)[0]
+mse_val = mse(X_shuf_val, y_shuf_val, beta_t)[0]
+mse_test = mse(X_shuf_test, y_shuf_test, beta_t)[0]
+print("MSE for training set: ", mse_train)
+print("MSE for validation set: ", mse_val)
+print("MSE for test set: ", mse_test)
+
